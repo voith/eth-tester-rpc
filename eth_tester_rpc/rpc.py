@@ -1,6 +1,9 @@
 import operator
 import random
 import sys
+from functools import (
+    partial,
+)
 
 from eth_tester import (
     EthereumTester,
@@ -33,7 +36,7 @@ def not_implemented(*args, **kwargs):
 
 
 @curry
-def call_eth_tester(fn_name, eth_tester, fn_args, fn_kwargs=None):
+def call_eth_tester(fn_name, eth_tester, *fn_args, **fn_kwargs):
     if fn_kwargs is None:
         fn_kwargs = {}
     return getattr(eth_tester, fn_name)(*fn_args, **fn_kwargs)
@@ -362,6 +365,9 @@ class RPCMethods:
         namespace, _, endpoint = item.partition('_')
         try:
             delegator = self.api_endpoints[namespace][endpoint]
-            return curry(delegator)(self.client)
+            try:
+                return lambda *args, **kwargs: delegator(self.client, *args, **kwargs)
+            except NotImplementedError:
+                return None
         except KeyError:
             return super().__getattribute__(item)

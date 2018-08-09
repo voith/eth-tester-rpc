@@ -26,6 +26,9 @@ extras_require = {
         "twine",
         "ipython",
     ],
+    'gevent': [
+        "gevent>=1.1.1,<1.2.0",
+    ]
 }
 
 extras_require['dev'] = (
@@ -51,6 +54,8 @@ setup(
         "cytoolz>=0.9.0,<1.0.0;implementation_name=='cpython'",
         "eth-tester[py-evm]==0.1.0b30",
         'json-rpc>=1.10.3',
+        'Werkzeug>=0.11.10',
+        'click>=6.6',
     ],
     setup_requires=['setuptools-markdown'],
     python_requires='>=3.5, <4',
