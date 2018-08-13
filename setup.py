@@ -26,6 +26,9 @@ extras_require = {
         "twine",
         "ipython",
     ],
+    'gevent': [
+        "gevent>=1.1.1,<1.2.0",
+    ]
 }
 
 extras_require['dev'] = (
@@ -36,22 +39,28 @@ extras_require['dev'] = (
 )
 
 setup(
-    name='<PYPI_NAME>',
+    name='eth-teser-rpc',
     # *IMPORTANT*: Don't manually change the version here. Use `make bump`, as described in readme
     version='0.1.0-alpha.0',
-    description="""<PYPI_NAME>: <SHORT_DESCRIPTION>""",
+    description="""Python TestRPC for ethereun""",
     long_description_markdown_filename='README.md',
-    author='Jason Carver',
+    author='voith',
     author_email='ethcalibur+pip@gmail.com',
-    url='https://github.com/ethereum/<REPO_NAME>',
+    url='https://github.com/voith/eth-teser-rpc',
     include_package_data=True,
     install_requires=[
         "eth-utils>=1,<2",
+        "toolz>=0.9.0,<1.0.0;implementation_name=='pypy'",
+        "cytoolz>=0.9.0,<1.0.0;implementation_name=='cpython'",
+        "eth-tester[py-evm]==0.1.0b30",
+        'json-rpc>=1.10.3',
+        'Werkzeug>=0.11.10',
+        'click>=6.6',
     ],
     setup_requires=['setuptools-markdown'],
     python_requires='>=3.5, <4',
     extras_require=extras_require,
-    py_modules=['<MODULE_NAME>'],
+    py_modules=['eth_tester_rpc'],
     license="MIT",
     zip_safe=False,
     keywords='ethereum',
