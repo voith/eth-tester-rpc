@@ -352,7 +352,8 @@ class RPCMethods:
 
     def __init__(self, eth_tester=None, api_endpoints=None):
         if eth_tester is None:
-            self.client = EthereumTester()
+            from eth_tester.backends.pyevm.main import PyEVMBackend
+            self.client = EthereumTester(backend=PyEVMBackend())
         else:
             self.client = eth_tester
 
