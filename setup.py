@@ -39,7 +39,7 @@ extras_require['dev'] = (
 )
 
 setup(
-    name='eth-teser-rpc',
+    name='eth-tester-rpc',
     # *IMPORTANT*: Don't manually change the version here. Use `make bump`, as described in readme
     version='0.1.0-alpha.0',
     description="""Python TestRPC for ethereum""",

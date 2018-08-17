@@ -163,7 +163,7 @@ API_ENDPOINTS = {
         ),
     },
     'net': {
-        'version': not_implemented,
+        'version': lambda x: 1,
         'peerCount': not_implemented,
         'listening': not_implemented,
     },
