@@ -36,7 +36,7 @@ def not_implemented(*args, **kwargs):
 
 
 @curry
-def call_eth_tester(fn_name, eth_tester, *fn_args, **fn_kwargs):
+def call_eth_tester(fn_name, eth_tester, fn_args, fn_kwargs=None):
     if fn_kwargs is None:
         fn_kwargs = {}
     return getattr(eth_tester, fn_name)(*fn_args, **fn_kwargs)
@@ -163,7 +163,7 @@ API_ENDPOINTS = {
         ),
     },
     'net': {
-        'version': lambda x: 1,
+        'version': not_implemented,
         'peerCount': not_implemented,
         'listening': not_implemented,
     },
@@ -178,10 +178,10 @@ API_ENDPOINTS = {
         'hashrate': not_implemented,
         'gasPrice': not_implemented,
         'accounts': call_eth_tester('get_accounts'),
-        # 'blockNumber': compose(
-        #     operator.itemgetter('number'),
-        #     call_eth_tester('get_block_by_number', fn_kwargs={'block_number': 'latest'}),
-        # ),
+        'blockNumber': compose(
+            operator.itemgetter('number'),
+            call_eth_tester('get_block_by_number', fn_kwargs={'block_number': 'latest'}),
+        ),
         'getBalance': call_eth_tester('get_balance'),
         'getStorageAt': not_implemented,
         'getTransactionCount': call_eth_tester('get_nonce'),
@@ -210,7 +210,7 @@ API_ENDPOINTS = {
         'sendTransaction': call_eth_tester('send_transaction'),
         'sendRawTransaction': call_eth_tester('send_raw_transaction'),
         'call': call_eth_tester('call'),  # TODO: untested
-        # 'estimateGas': call_eth_tester('estimate_gas'),  # TODO: untested
+        'estimateGas': call_eth_tester('estimate_gas'),  # TODO: untested
         'getBlockByHash': null_if_block_not_found(call_eth_tester('get_block_by_hash')),
         'getBlockByNumber': null_if_block_not_found(call_eth_tester('get_block_by_number')),
         'getTransactionByHash': null_if_transaction_not_found(
@@ -348,6 +348,15 @@ API_ENDPOINTS = {
 }
 
 
+def call_delegator(delegator, client, *args):
+    if len(args) == 2:
+        method, params = args
+        return delegator(client, method, params)
+    else:
+        method = args
+        return delegator(client, method)
+
+
 class RPCMethods:
 
     def __init__(self, eth_tester=None, api_endpoints=None):
@@ -364,17 +373,12 @@ class RPCMethods:
 
     def __getattr__(self, item):
         namespace, _, endpoint = item.partition('_')
+        delegator = self.api_endpoints[namespace][endpoint]
         try:
-            return super().__getattribute__(item)
-        except AttributeError:
-            delegator = self.api_endpoints[namespace][endpoint]
-            try:
-                return lambda *args, **kwargs: delegator(self.client, *args, **kwargs)
-            except NotImplementedError:
-                return None
-
-    def eth_estimateGas(self, params):
-        return self.client.estimate_gas(params)
-
-    def eth_blockNumber(self):
-        return self.client.get_block_by_number(block_number='latest')['number']
+            return lambda *args: call_delegator(
+                delegator,
+                self.client,
+                *args
+            )
+        except NotImplementedError:
+            return None
