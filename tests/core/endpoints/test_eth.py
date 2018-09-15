@@ -1,3 +1,7 @@
+from eth_tester.constants import (
+    UINT256_MIN,
+    UINT256_MAX
+)
 from eth_utils import (
     is_address,
 )
@@ -11,3 +15,19 @@ def test_eth_account(rpc_client):
         for account
         in accounts
     )
+
+
+def test_eth_getBlock(rpc_client):
+    block = rpc_client(
+        'eth_getBlockByNumber',
+        params=['0x01']
+    )
+    assert isinstance(block, dict)
+
+
+def test_eth_getBalance(rpc_client):
+    accounts = rpc_client('eth_accounts')
+    for account in accounts:
+        balance = rpc_client('eth_getBalance', params=[account, 'latest'])
+        assert balance >= UINT256_MIN
+        assert balance <= UINT256_MAX
