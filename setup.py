@@ -52,7 +52,7 @@ setup(
         "eth-utils>=1,<2",
         "toolz>=0.9.0,<1.0.0;implementation_name=='pypy'",
         "cytoolz>=0.9.0,<1.0.0;implementation_name=='cpython'",
-        "eth-tester[py-evm]==0.1.0b31",
+        "eth-tester[py-evm]==0.1.0b32",
         'json-rpc>=1.10.3',
         'Werkzeug>=0.11.10',
         'click>=6.6',
@@ -73,6 +73,6 @@ setup(
         'Programming Language :: Python :: 3',
         'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
-        'Programming Language :: Python :: Implementation :: PyPy',
+        'Programming Language :: Python :: 3.7',
     ],
 )
