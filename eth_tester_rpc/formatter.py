@@ -155,7 +155,7 @@ receipt_formatter = apply_formatters_to_dict(RECEIPT_FORMATTERS)
 transaction_params_transformer = compose(transaction_params_remapper, transaction_params_formatter)
 
 
-default_request_formatters={
+default_request_formatters = {
     # Eth
     'eth_getBlockByNumber': apply_formatters_to_args(
         apply_formatter_if(is_not_named_block, to_integer_if_hex),
@@ -210,7 +210,7 @@ default_request_formatters={
     ),
 }
 
-default_result_formatters={
+default_result_formatters = {
     'eth_getBlockByHash': apply_formatter_if(
         is_dict,
         block_key_remapper,
