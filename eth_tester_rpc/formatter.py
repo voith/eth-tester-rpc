@@ -19,10 +19,13 @@ from eth_tester_rpc.utils.formatters import (
     static_return,
 )
 from eth_tester_rpc.utils.toolz import (
+    assoc,
     complement,
     compose,
+    curry,
     identity,
     partial,
+    pipe,
 )
 
 
@@ -151,105 +154,130 @@ receipt_formatter = apply_formatters_to_dict(RECEIPT_FORMATTERS)
 
 transaction_params_transformer = compose(transaction_params_remapper, transaction_params_formatter)
 
-ethereum_tester_formatter = dict(
-    request_formatters={
-        # Eth
-        'eth_getBlockByNumber': apply_formatters_to_args(
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-        ),
-        'eth_getFilterChanges': apply_formatters_to_args(hex_to_integer),
-        'eth_getFilterLogs': apply_formatters_to_args(hex_to_integer),
-        'eth_getBlockTransactionCountByNumber': apply_formatters_to_args(
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-        ),
-        'eth_getUncleCountByBlockNumber': apply_formatters_to_args(
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-        ),
-        'eth_getTransactionByBlockHashAndIndex': apply_formatters_to_args(
-            identity,
-            to_integer_if_hex,
-        ),
-        'eth_getTransactionByBlockNumberAndIndex': apply_formatters_to_args(
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-            to_integer_if_hex,
-        ),
-        'eth_getUncleByBlockNumberAndIndex': apply_formatters_to_args(
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-            to_integer_if_hex,
-        ),
-        'eth_newFilter': apply_formatters_to_args(
-            filter_params_transformer,
-        ),
-        'eth_getLogs': apply_formatters_to_args(
-            filter_params_transformer,
-        ),
-        'eth_sendTransaction': apply_formatters_to_args(
-            transaction_params_transformer,
-        ),
-        'eth_estimateGas': apply_formatters_to_args(
-            transaction_params_transformer,
-        ),
-        'eth_call': apply_formatters_to_args(
-            transaction_params_transformer,
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-        ),
-        'eth_uninstallFilter': apply_formatters_to_args(hex_to_integer),
-        'eth_getCode': apply_formatters_to_args(
-            identity,
-            apply_formatter_if(is_not_named_block, to_integer_if_hex),
-        ),
-        # EVM
-        'evm_revert': apply_formatters_to_args(hex_to_integer),
-        # Personal
-        'personal_sendTransaction': apply_formatters_to_args(
-            transaction_params_transformer,
-            identity,
-        ),
-    },
-    result_formatters={
-        'eth_getBlockByHash': apply_formatter_if(
-            is_dict,
-            block_key_remapper,
-        ),
-        'eth_getBlockByNumber': apply_formatter_if(
-            is_dict,
-            block_key_remapper,
-        ),
-        'eth_getBlockTransactionCountByHash': apply_formatter_if(
-            is_dict,
-            transaction_key_remapper,
-        ),
-        'eth_getBlockTransactionCountByNumber': apply_formatter_if(
-            is_dict,
-            transaction_key_remapper,
-        ),
-        'eth_getTransactionByHash': apply_formatter_if(
-            is_dict,
-            compose(transaction_key_remapper, transaction_formatter),
-        ),
-        'eth_getTransactionReceipt': apply_formatter_if(
-            is_dict,
-            compose(receipt_key_remapper, receipt_formatter),
-        ),
-        'eth_newFilter': integer_to_hex,
-        'eth_newBlockFilter': integer_to_hex,
-        'eth_newPendingTransactionFilter': integer_to_hex,
-        'eth_getLogs': apply_formatter_if(
-            is_array_of_dicts,
-            apply_formatter_to_array(log_key_remapper),
-        ),
-        'eth_getFilterChanges': apply_formatter_if(
-            is_array_of_dicts,
-            apply_formatter_to_array(log_key_remapper),
-        ),
-        'eth_getFilterLogs': apply_formatter_if(
-            is_array_of_dicts,
-            apply_formatter_to_array(log_key_remapper),
-        ),
-        # EVM
-        'evm_snapshot': integer_to_hex,
-    },
-)
+
+default_request_formatters={
+    # Eth
+    'eth_getBlockByNumber': apply_formatters_to_args(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    'eth_getFilterChanges': apply_formatters_to_args(hex_to_integer),
+    'eth_getFilterLogs': apply_formatters_to_args(hex_to_integer),
+    'eth_getBlockTransactionCountByNumber': apply_formatters_to_args(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    'eth_getUncleCountByBlockNumber': apply_formatters_to_args(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    'eth_getTransactionByBlockHashAndIndex': apply_formatters_to_args(
+        identity,
+        to_integer_if_hex,
+    ),
+    'eth_getTransactionByBlockNumberAndIndex': apply_formatters_to_args(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+        to_integer_if_hex,
+    ),
+    'eth_getUncleByBlockNumberAndIndex': apply_formatters_to_args(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+        to_integer_if_hex,
+    ),
+    'eth_newFilter': apply_formatters_to_args(
+        filter_params_transformer,
+    ),
+    'eth_getLogs': apply_formatters_to_args(
+        filter_params_transformer,
+    ),
+    'eth_sendTransaction': apply_formatters_to_args(
+        transaction_params_transformer,
+    ),
+    'eth_estimateGas': apply_formatters_to_args(
+        transaction_params_transformer,
+    ),
+    'eth_call': apply_formatters_to_args(
+        transaction_params_transformer,
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    'eth_uninstallFilter': apply_formatters_to_args(hex_to_integer),
+    'eth_getCode': apply_formatters_to_args(
+        identity,
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    # EVM
+    'evm_revert': apply_formatters_to_args(hex_to_integer),
+    # Personal
+    'personal_sendTransaction': apply_formatters_to_args(
+        transaction_params_transformer,
+        identity,
+    ),
+}
+
+default_result_formatters={
+    'eth_getBlockByHash': apply_formatter_if(
+        is_dict,
+        block_key_remapper,
+    ),
+    'eth_getBlockByNumber': apply_formatter_if(
+        is_dict,
+        block_key_remapper,
+    ),
+    'eth_getBlockTransactionCountByHash': apply_formatter_if(
+        is_dict,
+        transaction_key_remapper,
+    ),
+    'eth_getBlockTransactionCountByNumber': apply_formatter_if(
+        is_dict,
+        transaction_key_remapper,
+    ),
+    'eth_getTransactionByHash': apply_formatter_if(
+        is_dict,
+        compose(transaction_key_remapper, transaction_formatter),
+    ),
+    'eth_getTransactionReceipt': apply_formatter_if(
+        is_dict,
+        compose(receipt_key_remapper, receipt_formatter),
+    ),
+    'eth_newFilter': integer_to_hex,
+    'eth_newBlockFilter': integer_to_hex,
+    'eth_newPendingTransactionFilter': integer_to_hex,
+    'eth_getLogs': apply_formatter_if(
+        is_array_of_dicts,
+        apply_formatter_to_array(log_key_remapper),
+    ),
+    'eth_getFilterChanges': apply_formatter_if(
+        is_array_of_dicts,
+        apply_formatter_to_array(log_key_remapper),
+    ),
+    'eth_getFilterLogs': apply_formatter_if(
+        is_array_of_dicts,
+        apply_formatter_to_array(log_key_remapper),
+    ),
+    # EVM
+    'evm_snapshot': integer_to_hex,
+}
+
+
+@curry
+def apply_dict_formatter(method, data, formatters):
+    if method in formatters:
+        formatter = formatters[method]
+        return formatter(data)
+    else:
+        return data
+
+
+def request_formatter(method, params):
+    return apply_dict_formatter(
+        method=method,
+        data=params,
+        formatters=default_request_formatters
+    )
+
+
+def result_formatter(method, result):
+    return apply_dict_formatter(
+        method=method,
+        data=result,
+        formatters=default_result_formatters
+    )
 
 
 ethereum_tester_fixture = {
@@ -266,17 +294,77 @@ ethereum_tester_fixture = {
 }
 
 
-def apply_formatter(method, params, request_formatters):
-    if method in request_formatters:
-        formatter = request_formatters[method]
-        return formatter(params)
+def guess_from(client, transaction):
+    try:
+        return client.get_accounts()[0]
+    except KeyError as e:
+        # no accounts available to pre-fill, carry on
+        pass
+
+    return None
+
+
+def guess_gas(client, transaction):
+    return client.estimate_gas(transaction) * 2
+
+
+@curry
+def fill_default(field, guess_func, client, transaction):
+    if field in transaction and transaction[field] is not None:
+        return transaction
     else:
-        return params
+        guess_val = guess_func(client, transaction)
+        return assoc(transaction, field, guess_val)
 
 
-def format_request_params(method, params=None):
-    return apply_formatter(
-        method,
-        params,
-        ethereum_tester_formatter['request_formatters']
-    )
+def default_value_formatter(client):
+    fill_default_from = fill_default('from', guess_from, client)
+    fill_default_gas = fill_default('gas', guess_gas, client)
+
+    def call_formatter(method, params):
+        if method == 'eth_call':
+            filled_transaction = pipe(
+                params[0],
+                fill_default_from,
+                fill_default_gas,
+            )
+            return (filled_transaction,) + params[1:]
+        elif method in (
+            'eth_estimateGas',
+            'eth_sendTransaction',
+        ):
+            filled_transaction = pipe(
+                params[0],
+                fill_default_from,
+            )
+            return (filled_transaction,) + params[1:]
+        else:
+            return params
+    return call_formatter
+
+
+def _apply_formatter(method, data, formatters):
+    for formatter in formatters:
+        data = formatter(method, data)
+    return data
+
+
+class Formatter:
+
+    def __init__(self, request_formatters, result_formatters):
+        self.request_formatters = request_formatters
+        self.result_formatters = result_formatters
+
+    def apply_request_formatter(self, method, params):
+        return _apply_formatter(
+            method,
+            params,
+            self.request_formatters
+        )
+
+    def apply_result_formatter(self, method, result):
+        return _apply_formatter(
+            method,
+            result,
+            self.result_formatters
+        )

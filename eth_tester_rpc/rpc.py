@@ -18,10 +18,6 @@ from eth_utils import (
     keccak,
 )
 
-from eth_tester_rpc.formatter import (
-    format_request_params,
-)
-
 from .utils.formatters import (
     apply_formatter_if,
 )
@@ -350,11 +346,27 @@ API_ENDPOINTS = {
 
 
 def call_delegator(delegator, client, method, *args):
+    from .formatter import (
+        Formatter,
+        request_formatter,
+        result_formatter,
+        default_value_formatter,
+    )
+    formatter = Formatter(
+        request_formatters=[
+            default_value_formatter(client),
+            request_formatter
+        ],
+        result_formatters=[
+            result_formatter
+        ]
+    )
     if args:
-        params = format_request_params(method, args)
+        params = formatter.apply_request_formatter(method, args)
     else:
         params = args
-    return delegator(client, params)
+    result = delegator(client, params)
+    return formatter.apply_result_formatter(method, result)
 
 
 class RPCMethods:

@@ -109,3 +109,8 @@ def rpc_client(rpc_server):
     make_request.server = rpc_server
 
     return make_request
+
+
+@pytest.fixture()
+def accounts(rpc_client):
+    return rpc_client('eth_accounts')
