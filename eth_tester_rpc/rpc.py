@@ -18,6 +18,12 @@ from eth_utils import (
     keccak,
 )
 
+from .formatter import (
+    Formatter,
+    default_value_formatter,
+    request_formatter,
+    result_formatter,
+)
 from .utils.formatters import (
     apply_formatter_if,
 )
@@ -345,13 +351,22 @@ API_ENDPOINTS = {
 }
 
 
-def call_delegator(delegator, client, *args):
-    if len(args) == 2:
-        method, params = args
-        return delegator(client, method, params)
+def call_delegator(delegator, client, method, *args):
+    formatter = Formatter(
+        request_formatters=[
+            default_value_formatter(client),
+            request_formatter
+        ],
+        result_formatters=[
+            result_formatter
+        ]
+    )
+    if args:
+        params = formatter.apply_request_formatter(method, args)
     else:
-        method = args
-        return delegator(client, method)
+        params = args
+    result = delegator(client, params)
+    return formatter.apply_result_formatter(method, result)
 
 
 class RPCMethods:
@@ -368,13 +383,14 @@ class RPCMethods:
         else:
             self.api_endpoints = api_endpoints
 
-    def __getattr__(self, item):
-        namespace, _, endpoint = item.partition('_')
+    def __getattr__(self, method):
+        namespace, _, endpoint = method.partition('_')
         delegator = self.api_endpoints[namespace][endpoint]
         try:
             return lambda *args: call_delegator(
                 delegator,
                 self.client,
+                method,
                 *args
             )
         except NotImplementedError:
