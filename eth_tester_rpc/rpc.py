@@ -1,6 +1,3 @@
-from functools import (
-    partial,
-)
 import operator
 import random
 import sys

@@ -5,9 +5,8 @@ import socket  # noqa: F401
 import subprocess  # noqa: F401
 import threading
 import time
-from wsgiref.simple_server import (
-    make_server  # noqa: F401,
-)
+
+from wsgiref.simple_server import make_server  # noqa: F401 isort:skip
 
 sleep = time.sleep
 
