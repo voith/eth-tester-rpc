@@ -2,12 +2,13 @@ import random
 
 import click
 
-
-from .server import get_application
+from .server import (
+    get_application,
+)
 from .utils.compat_threading import (
     make_server,
-    spawn,
     sleep,
+    spawn,
 )
 
 
