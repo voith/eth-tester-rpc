@@ -1,14 +1,12 @@
-import pytest
-
 from eth_tester.constants import (
+    UINT256_MAX,
     UINT256_MIN,
-    UINT256_MAX
 )
 from eth_utils import (
     is_address,
     is_checksum_address,
 )
-
+import pytest
 
 # def test_eth_protocolVersion(w3):
 #     with pytest.raises(ValueError):

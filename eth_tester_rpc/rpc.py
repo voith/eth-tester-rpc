@@ -1,9 +1,9 @@
-import operator
-import random
-import sys
 from functools import (
     partial,
 )
+import operator
+import random
+import sys
 
 from eth_tester import (
     EthereumTester,

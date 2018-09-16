@@ -2,12 +2,12 @@ import contextlib
 import itertools
 import json
 import os
-import pytest
 import socket
 
 from eth_utils import (
     to_text,
 )
+import pytest
 
 from eth_tester_rpc.utils.compat_threading import (
     make_server,
@@ -16,7 +16,6 @@ from eth_tester_rpc.utils.compat_threading import (
 from tests.utils import (
     wait_for_http_connection,
 )
-
 
 request_counter = itertools.count()
 

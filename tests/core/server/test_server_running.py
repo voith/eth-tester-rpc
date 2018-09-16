@@ -1,10 +1,16 @@
 import os
 import signal
 
-from click.testing import CliRunner
+from click.testing import (
+    CliRunner,
+)
 
-from eth_tester_rpc.cli import runserver
-from eth_tester_rpc.rpc import RPCMethods
+from eth_tester_rpc.cli import (
+    runserver,
+)
+from eth_tester_rpc.rpc import (
+    RPCMethods,
+)
 from eth_tester_rpc.utils.compat_threading import (
     sleep,
     spawn,

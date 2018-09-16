@@ -1,6 +1,8 @@
 import pytest
 
-from tests.utils import get_open_port
+from tests.utils import (
+    get_open_port,
+)
 
 
 @pytest.fixture()

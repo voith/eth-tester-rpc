@@ -1,12 +1,13 @@
 """
 A minimal implementation of the various gevent APIs used within this codebase.
 """
-import time
-import threading
 import socket  # noqa: F401
 import subprocess  # noqa: F401
-from wsgiref.simple_server import make_server  # noqa: F401
-
+import threading
+import time
+from wsgiref.simple_server import (
+    make_server  # noqa: F401,
+)
 
 sleep = time.sleep
 

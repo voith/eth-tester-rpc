@@ -9,9 +9,12 @@ from werkzeug.wrappers import (
     Response,
 )
 
-from .rpc import RPCMethods
-from .utils.compat_threading import threading
-
+from .rpc import (
+    RPCMethods,
+)
+from .utils.compat_threading import (
+    threading,
+)
 
 RESPONSE_HEADERS = {
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
