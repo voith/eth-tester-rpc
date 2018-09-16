@@ -18,6 +18,12 @@ from eth_utils import (
     keccak,
 )
 
+from .formatter import (
+    Formatter,
+    default_value_formatter,
+    request_formatter,
+    result_formatter,
+)
 from .utils.formatters import (
     apply_formatter_if,
 )
@@ -346,12 +352,6 @@ API_ENDPOINTS = {
 
 
 def call_delegator(delegator, client, method, *args):
-    from .formatter import (
-        Formatter,
-        request_formatter,
-        result_formatter,
-        default_value_formatter,
-    )
     formatter = Formatter(
         request_formatters=[
             default_value_formatter(client),
