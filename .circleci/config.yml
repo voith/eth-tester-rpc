@@ -70,3 +70,4 @@ workflows:
       - py35-core
       - py36-core
       - py37-core
+      - pypy3-core
