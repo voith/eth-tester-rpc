@@ -10,6 +10,7 @@ extras_require = {
         "pytest==3.3.2",
         "pytest-xdist",
         "tox>=2.9.1,<3",
+        "requests>=2.16.0,<3.0.0",
     ],
     'lint': [
         "flake8==3.4.1",
@@ -53,6 +54,9 @@ setup(
         "toolz>=0.9.0,<1.0.0;implementation_name=='pypy'",
         "cytoolz>=0.9.0,<1.0.0;implementation_name=='cpython'",
         "eth-tester[py-evm]==0.1.0b32",
+        'eth-abi>=1.0.0-beta.1,<2',
+        "eth-hash[pysha3]>=0.1.4,<1.0.0;implementation_name=='cpython'",
+        "eth-hash[pycryptodome]>=0.1.4,<1.0.0;implementation_name=='pypy'",
         'json-rpc>=1.10.3',
         'Werkzeug>=0.11.10',
         'click>=6.6',

@@ -108,3 +108,6 @@ fabric.properties
 
 # Pycharm
 .idea/
+
+# pytest
+.pytest_cache/

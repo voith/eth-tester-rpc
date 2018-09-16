@@ -5,7 +5,7 @@ try:
         excepts,
     )
 except ImportError:
-    from toolz import (
+    from toolz import (  # noqa: F401
         compose,
         curry,
         excepts,
