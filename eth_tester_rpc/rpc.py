@@ -18,7 +18,10 @@ from eth_utils import (
     keccak,
 )
 
-from eth_tester_rpc.formatter import format_request_params
+from eth_tester_rpc.formatter import (
+    format_request_params,
+)
+
 from .utils.formatters import (
     apply_formatter_if,
 )

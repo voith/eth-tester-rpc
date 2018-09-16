@@ -1,6 +1,6 @@
 from eth_tester.constants import (
+    UINT256_MAX,
     UINT256_MIN,
-    UINT256_MAX
 )
 from eth_utils import (
     is_address,
