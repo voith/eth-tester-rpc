@@ -11,6 +11,7 @@ extras_require = {
         "pytest-xdist",
         "tox>=2.9.1,<3",
         "requests>=2.16.0,<3.0.0",
+        "eth-account>=0.2.1,<0.4.0",
     ],
     'lint': [
         "flake8==3.4.1",
