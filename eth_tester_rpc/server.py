@@ -83,6 +83,8 @@ def get_application():
     add_method_with_lock(rpc_methods.evm_snapshot, 'evm_snapshot')
     add_method_with_lock(rpc_methods.evm_revert, 'evm_revert')
     add_method_with_lock(rpc_methods.evm_mine, 'evm_mine')
+    add_method_with_lock(rpc_methods.personal_importRawKey, 'personal_importRawKey')
+    add_method_with_lock(rpc_methods.personal_unlockAccount, 'personal_unlockAccount')
     add_method_with_lock(rpc_methods.testing_timeTravel, 'testing_timeTravel')
 
     @Request.application
