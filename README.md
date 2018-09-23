@@ -4,7 +4,6 @@
 [![Build Status](https://circleci.com/gh/voith/eth-tester-rpc.svg?style=shield)](https://circleci.com/gh/voith/eth-tester-rpc)
 [![PyPI version](https://badge.fury.io/py/<PYPI_NAME>.svg)](https://badge.fury.io/py/<PYPI_NAME>)
 [![Python versions](https://img.shields.io/pypi/pyversions/<PYPI_NAME>.svg)](https://pypi.python.org/pypi/<PYPI_NAME>)
-[![Docs build](https://readthedocs.org/projects/<RTD_NAME>/badge/?version=latest)](http://<RTD_NAME>.readthedocs.io/en/latest/?badge=latest)
    
 
 A rewrite of [Piper Merriam's eth-testrpc](https://github.com/pipermerriam/eth-testrpc/tree/master/testrpc) using [eth-tester](https://github.com/ethereum/eth-tester)
