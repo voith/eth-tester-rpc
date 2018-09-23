@@ -15,6 +15,9 @@ from .rpc import (
 from .utils.compat_threading import (
     threading,
 )
+from .utils.conversion import (
+    force_obj_to_text,
+)
 
 RESPONSE_HEADERS = {
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
@@ -89,7 +92,7 @@ def get_application():
             dispatcher,
         )
         response = Response(
-            json.dumps(response.data),
+            json.dumps(force_obj_to_text(response.data, True)),
             headers=RESPONSE_HEADERS,
             mimetype='application/json',
         )

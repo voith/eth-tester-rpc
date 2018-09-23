@@ -15,6 +15,9 @@ from eth_tester_rpc.utils.compat_threading import (
     make_server,
     spawn,
 )
+from eth_tester_rpc.utils.conversion import (
+    force_obj_to_text,
+)
 from tests.utils import (
     encode_fn_abi,
     wait_for_http_connection,
@@ -74,7 +77,7 @@ def rpc_client(rpc_server):
             "method": method,
             "params": params or [],
         }
-        payload_data = json.dumps(payload)
+        payload_data = json.dumps(force_obj_to_text(payload, True))
 
         if 'TESTRPC_ASYNC_GEVENT' in os.environ:
             from geventhttpclient import HTTPClient
