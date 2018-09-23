@@ -1,4 +1,4 @@
-def test_eth_sendTransaction(rpc_client, accounts):
+def test_eth_TransactionCount(rpc_client, accounts):
     for _ in range(3):
         rpc_client(
             method="eth_sendTransaction",
