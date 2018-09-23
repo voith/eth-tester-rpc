@@ -179,7 +179,7 @@ API_ENDPOINTS = {
         ),
         'mining': not_implemented,
         'hashrate': not_implemented,
-        'gasPrice': not_implemented,
+        'gasPrice': lambda *_: 1,
         'accounts': call_eth_tester('get_accounts'),
         'blockNumber': compose(
             operator.itemgetter('number'),
