@@ -88,6 +88,7 @@ def get_application():
     add_method_with_lock(rpc_methods.personal_lockAccount, 'personal_lockAccount')
     add_method_with_lock(rpc_methods.personal_listAccounts, 'personal_listAccounts')
     add_method_with_lock(rpc_methods.personal_newAccount, 'personal_newAccount')
+    add_method_with_lock(rpc_methods.personal_sendTransaction, 'personal_sendTransaction')
     add_method_with_lock(rpc_methods.testing_timeTravel, 'testing_timeTravel')
 
     @Request.application
