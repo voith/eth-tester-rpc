@@ -134,7 +134,11 @@ FILTER_PARAMS_FORMATTERS = {
 
 filter_params_formatter = apply_formatters_to_dict(FILTER_PARAMS_FORMATTERS)
 
-filter_params_transformer = compose(filter_params_remapper, filter_params_formatter)
+filter_params_transformer = compose(
+    remove_key_if('address', lambda x: not x['address']),
+    filter_params_remapper,
+    filter_params_formatter
+)
 
 
 TRANSACTION_FORMATTERS = {
