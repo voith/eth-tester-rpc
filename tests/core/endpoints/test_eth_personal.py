@@ -1,5 +1,9 @@
-from eth_account import Account
-from eth_utils import encode_hex
+from eth_account import (
+    Account,
+)
+from eth_utils import (
+    encode_hex,
+)
 
 
 def test_personal_importRawKey(rpc_client):
