@@ -1,3 +1,4 @@
+
 def test_eth_getBlock(rpc_client):
     block = rpc_client(
         'eth_getBlockByNumber',
