@@ -30,7 +30,7 @@ def test_new_filter_with_single_no_args_event(
     filter_id = rpc_client('eth_newFilter', params=[{
         "fromBlock": "latest",
         "toBlock": "latest",
-        # "address": [],
+        "address": [],
         "topics": []
     }])
 
