@@ -1,6 +1,6 @@
 # eth-tester-rpc
 
-[![Join the chat at https://gitter.im/ethereum/<REPO_NAME>](https://badges.gitter.im/ethereum/<REPO_NAME>.svg)](https://gitter.im/ethereum/<REPO_NAME>?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+[![Join the chat at https://gitter.im/ethereum/eth-tester-rpc](https://badges.gitter.im/ethereum/eth-tester-rpc.svg)](https://gitter.im/ethereum/eth-tester-rpc?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://circleci.com/gh/voith/eth-tester-rpc.svg?style=shield)](https://circleci.com/gh/voith/eth-tester-rpc)
 [![PyPI version](https://badge.fury.io/py/eth-tester-rpc.svg)](https://badge.fury.io/py/eth-tester-rpc)
 [![Python versions](https://img.shields.io/pypi/pyversions/eth-tester-rpc.svg)](https://pypi.python.org/pypi/eth-tester-rpc)
@@ -13,8 +13,7 @@ Read more in the docs. TODO
 ## Quickstart
 
 ```sh
-git clone git@github.com:voith/eth-tester-rpc.git
-pip install -e .
+pip install eth-tester-rpc
 ```
 
 ## Developer Setup
