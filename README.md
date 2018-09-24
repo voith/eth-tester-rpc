@@ -2,8 +2,8 @@
 
 [![Join the chat at https://gitter.im/ethereum/<REPO_NAME>](https://badges.gitter.im/ethereum/<REPO_NAME>.svg)](https://gitter.im/ethereum/<REPO_NAME>?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
 [![Build Status](https://circleci.com/gh/voith/eth-tester-rpc.svg?style=shield)](https://circleci.com/gh/voith/eth-tester-rpc)
-[![PyPI version](https://badge.fury.io/py/<PYPI_NAME>.svg)](https://badge.fury.io/py/<PYPI_NAME>)
-[![Python versions](https://img.shields.io/pypi/pyversions/<PYPI_NAME>.svg)](https://pypi.python.org/pypi/<PYPI_NAME>)
+[![PyPI version](https://badge.fury.io/py/eth-tester-rpc.svg)](https://badge.fury.io/py/eth-tester-rpc)
+[![Python versions](https://img.shields.io/pypi/pyversions/eth-tester-rpc.svg)](https://pypi.python.org/pypi/eth-tester-rpc)
    
 
 A rewrite of [Piper Merriam's eth-testrpc](https://github.com/pipermerriam/eth-testrpc/tree/master/testrpc) using [eth-tester](https://github.com/ethereum/eth-tester)
