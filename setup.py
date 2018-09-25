@@ -48,7 +48,7 @@ setup(
     long_description_markdown_filename='README.md',
     author='voith',
     author_email='voithjm1@gmail.com',
-    url='https://github.com/voith/eth-teser-rpc',
+    url='https://github.com/voith/eth-tester-rpc',
     include_package_data=True,
     install_requires=[
         "eth-utils>=1,<2",
