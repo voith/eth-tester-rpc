@@ -61,6 +61,7 @@ setup(
         'json-rpc>=1.10.3',
         'Werkzeug>=0.11.10',
         'click>=6.6',
+        'eth-typing<2.0.0,>=1.1.0',
     ],
     setup_requires=['setuptools-markdown'],
     python_requires='>=3.5, <4',
