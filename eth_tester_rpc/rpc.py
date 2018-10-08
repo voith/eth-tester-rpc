@@ -31,6 +31,7 @@ from .utils.toolz import (
     compose,
     curry,
     excepts,
+    partial,
 )
 
 
@@ -387,11 +388,11 @@ class RPCMethods:
         namespace, _, endpoint = method.partition('_')
         delegator = self.api_endpoints[namespace][endpoint]
         try:
-            return lambda *args: call_delegator(
+            return partial(
+                call_delegator,
                 delegator,
                 self.client,
-                method,
-                *args
+                method
             )
         except NotImplementedError:
             return None
