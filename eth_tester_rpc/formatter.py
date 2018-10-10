@@ -94,7 +94,8 @@ BLOCK_KEY_MAPPINGS = {
 }
 
 
-# This is needed when transactions are returned as a part of requested block in their full form (not just ids),
+# This is needed when transactions are returned as a part of
+# requested block in their full form (not just ids),
 # such as when calling web3.eth.getBlock(123, fullTransactions=True)
 BLOCK_NESTED_REMAPPERS = {
     'transactions': apply_formatter_to_array(apply_formatter_if(is_dict, transaction_key_remapper)),
