@@ -12,3 +12,16 @@ def test_eth_estimate_gas(rpc_client, accounts):
     )
     gas_estimate = hex_gas_estimate
     assert gas_estimate > 50000
+
+
+def test_eth_estimate_gas_hex_value(rpc_client, accounts):
+    hex_gas_estimate = rpc_client(
+        method="eth_estimateGas",
+        params=[{
+            "from": accounts[0],
+            "data": CONTRACT_BIN,
+            "value": hex(1234),
+        }],
+    )
+    gas_estimate = hex_gas_estimate
+    assert gas_estimate > 50000
