@@ -71,6 +71,7 @@ def get_application():
     add_method_with_lock(rpc_methods.eth_getUncleCountByBlockHash, 'eth_getUncleCountByBlockHash')
     add_method_with_lock(rpc_methods.eth_getUncleCountByBlockNumber, 'eth_getUncleCountByBlockNumber')
     add_method_with_lock(rpc_methods.eth_getTransactionByBlockNumberAndIndex, 'eth_getTransactionByBlockNumberAndIndex')
+    add_method_with_lock(rpc_methods.eth_getLogs, 'eth_getLogs')
     add_method_with_lock(rpc_methods.eth_newBlockFilter, 'eth_newBlockFilter')
     add_method_with_lock(rpc_methods.eth_newPendingTransactionFilter,
                          'eth_newPendingTransactionFilter')
