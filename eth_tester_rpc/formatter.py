@@ -337,9 +337,14 @@ def default_value_formatter(client):
     fill_default_gas = fill_default('gas', guess_gas, client)
 
     def call_formatter(method, params):
-        if method in (
+        if method == 'eth_estimateGas':
+            filled_transaction = pipe(
+                params[0],
+                fill_default_from,
+            )
+            return (filled_transaction,) + params[1:]
+        elif method in (
                 'eth_call',
-                'eth_estimateGas',
                 'eth_sendTransaction',
         ):
             filled_transaction = pipe(
