@@ -66,6 +66,7 @@ def get_application():
     add_method_with_lock(rpc_methods.eth_getBlockByHash, 'eth_getBlockByHash')
     add_method_with_lock(rpc_methods.eth_getBlockByNumber, 'eth_getBlockByNumber')
     add_method_with_lock(rpc_methods.eth_getTransactionByBlockHashAndIndex, 'eth_getTransactionByBlockHashAndIndex')
+    add_method_with_lock(rpc_methods.eth_getBlockTransactionCountByHash, 'eth_getBlockTransactionCountByHash')
     add_method_with_lock(rpc_methods.eth_newBlockFilter, 'eth_newBlockFilter')
     add_method_with_lock(rpc_methods.eth_newPendingTransactionFilter,
                          'eth_newPendingTransactionFilter')
