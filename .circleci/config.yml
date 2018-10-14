@@ -43,7 +43,7 @@ jobs:
       - image: circleci/python:3.5
         environment:
           TOXENV: py35-core
-  py35-core:
+  py35-integration-web3:
     <<: *common
     docker:
       - image: circleci/python:3.5
@@ -56,7 +56,7 @@ jobs:
       - image: circleci/python:3.6
         environment:
           TOXENV: py36-core
-  py36-core:
+  py36-integration-web3:
     <<: *common
     docker:
       - image: circleci/python:3.6
@@ -69,7 +69,7 @@ jobs:
       - image: circleci/python:3.7
         environment:
           TOXENV: py37-core
-    py37-core:
+    py37-integration-web3:
     <<: *common
     docker:
       - image: circleci/python:3.7
@@ -82,7 +82,7 @@ jobs:
       - image: pypy
         environment:
           TOXENV: pypy3-core
-  pypy3-core:
+  pypy3-integration-web3:
     <<: *common
     docker:
       - image: pypy
