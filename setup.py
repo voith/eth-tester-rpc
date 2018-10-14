@@ -12,6 +12,7 @@ extras_require = {
         "tox>=2.9.1,<3",
         "requests>=2.16.0,<3.0.0",
         "eth-account>=0.2.1,<0.4.0",
+        "web3>=4.0.0,<5.0.0",
     ],
     'lint': [
         "flake8==3.4.1",
