@@ -81,4 +81,7 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
+    entry_points={
+        'console_scripts': ['py-testrpc=eth_tester_rpc.cli:runserver'],
+    },
 )
