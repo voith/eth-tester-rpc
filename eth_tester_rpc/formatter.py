@@ -17,6 +17,7 @@ from eth_tester_rpc.utils.formatters import (
     is_array_of_dicts,
     remove_key_if,
     static_return,
+    apply_formatter_at_index,
 )
 from eth_tester_rpc.utils.toolz import (
     assoc,
@@ -169,11 +170,14 @@ receipt_formatter = apply_formatters_to_dict(RECEIPT_FORMATTERS)
 
 transaction_params_transformer = compose(transaction_params_remapper, transaction_params_formatter)
 
-
 default_request_formatters = {
     # Eth
     'eth_getBlockByNumber': apply_formatters_to_args(
         apply_formatter_if(is_not_named_block, to_integer_if_hex),
+    ),
+    'eth_getBalance': apply_formatter_at_index(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+        1
     ),
     'eth_getFilterChanges': apply_formatters_to_args(hex_to_integer),
     'eth_getFilterLogs': apply_formatters_to_args(hex_to_integer),
