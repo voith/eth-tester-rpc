@@ -36,7 +36,7 @@ To make a connection using web3.py
 ```python
 from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider("http://localhost:64766"))
+w3 = Web3(Web3.HTTPProvider("http://localhost:8888"))
 print(w3.eth.blockNumber)
 ```
 
