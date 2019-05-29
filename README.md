@@ -16,7 +16,7 @@ The `eth-teste-rpc` is a tool for testing any code that needs to make calls to e
 pip install eth-tester-rpc
 ```
 
-To check usage of command:
+To check usage of the command:
 ```bash
 $ py-testrpc --help
 
@@ -30,13 +30,13 @@ To start the server:
 ```bash
 py-testrpc -p 8888
 ```
-The above command will start a server at prot 8888. The default port is 8545.
+The above command will start a server at port 8888. The default port is 8545.
 
 To make a connection using web3.py
 ```python
 from web3 import Web3
 
-w3 = Web3(Web3.HTTPProvider("http://localhost:64766"))
+w3 = Web3(Web3.HTTPProvider("http://localhost:8888"))
 print(w3.eth.blockNumber)
 ```
 
