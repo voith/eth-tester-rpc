@@ -1,4 +1,5 @@
 import json
+import logging
 
 from jsonrpc import (
     JSONRPCResponseManager,
@@ -23,6 +24,9 @@ RESPONSE_HEADERS = {
     "Access-Control-Allow-Headers": "Origin, X-Requested-With, Content-Type, Accept",
     "Access-Control-Allow-Origin": "*",
 }
+
+
+logger = logging.getLogger(__file__)
 
 
 def get_application():
@@ -118,6 +122,7 @@ def get_application():
 
     @Request.application
     def application(request):
+        print(request.url, request.data)
         response = JSONRPCResponseManager.handle(
             request.data,
             dispatcher,
