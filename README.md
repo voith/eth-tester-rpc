@@ -8,12 +8,36 @@
 
 A rewrite of [Piper Merriam's eth-testrpc](https://github.com/pipermerriam/eth-testrpc/tree/master/testrpc) using [eth-tester](https://github.com/ethereum/eth-tester)
 
-Read more in the docs. TODO
+The `eth-teste-rpc` is a tool for testing any code that needs to make calls to ethereums RPC API. It starts a server to which you can connect your application and run tests accordingly.It is built on top of [py-evm](https://github.com/ethereum/py-evm).
 
 ## Quickstart
 
 ```sh
 pip install eth-tester-rpc
+```
+
+To check usage of command:
+```bash
+$ py-testrpc --help
+
+Options:
+  -h, --host TEXT
+  -p, --port INTEGER
+  --help              Show this message and exit.
+```
+
+To start the server:
+```bash
+py-testrpc -p 8888
+```
+The above command will start a server at prot 8888. The default port is 8545.
+
+To make a connection using web3.py
+```python
+from web3 import Web3
+
+w3 = Web3(Web3.HTTPProvider("http://localhost:64766"))
+print(w3.eth.blockNumber)
 ```
 
 ## Developer Setup
