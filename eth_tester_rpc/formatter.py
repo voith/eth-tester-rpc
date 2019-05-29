@@ -7,6 +7,7 @@ from eth_utils import (
 )
 
 from eth_tester_rpc.utils.formatters import (
+    apply_formatter_at_index,
     apply_formatter_if,
     apply_formatter_to_array,
     apply_formatters_to_args,
@@ -17,7 +18,6 @@ from eth_tester_rpc.utils.formatters import (
     is_array_of_dicts,
     remove_key_if,
     static_return,
-    apply_formatter_at_index,
 )
 from eth_tester_rpc.utils.toolz import (
     assoc,
