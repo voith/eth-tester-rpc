@@ -79,6 +79,8 @@ jobs:
     <<: *metamask
     docker:
       - image: circleci/python:3.6
+      environment:
+          TOXENV: py36-integration-metamask
   # python3.7
   py37-core:
     <<: *common
