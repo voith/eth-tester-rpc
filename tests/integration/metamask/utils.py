@@ -157,7 +157,7 @@ class MetamaskExtension:
                 browser.find_by_text("Custom RPC").click()
                 browser.find_by_css('#network-name').fill("testrpc")
                 browser.find_by_css('#rpc-url').fill("http://localhost:{}".format(self._rpc_port))
-                browser.find_by_css('#chainId').fill("123")
+                browser.find_by_css('#chainId').fill("99")
                 browser.find_by_text("Save").click()
 
             sleep(1)
