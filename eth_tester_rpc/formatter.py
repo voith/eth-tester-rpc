@@ -187,6 +187,10 @@ default_request_formatters = {
     'eth_getUncleCountByBlockNumber': apply_formatters_to_args(
         apply_formatter_if(is_not_named_block, to_integer_if_hex),
     ),
+    'eth_getTransactionCount': apply_formatter_at_index(
+        apply_formatter_if(is_not_named_block, to_integer_if_hex),
+        1
+    ),
     'eth_getTransactionByBlockHashAndIndex': apply_formatters_to_args(
         identity,
         to_integer_if_hex,
