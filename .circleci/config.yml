@@ -23,6 +23,18 @@ common: &common
           - ./eggs
         key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
 
+metamask: &metamask
+  steps:
+    - run:
+        name: install chrome driver
+        command: |
+          wget -N http://chromedriver.storage.googleapis.com/2.41/chromedriver_linux64.zip
+          unzip chromedriver_linux64.zip
+          chmod +x chromedriver
+          sudo mv chromedriver /usr/bin
+          sudo ln -s /usr/bin/google-chrome-stable /usr/bin/chrome
+          chromedriver --version
+
 jobs:
   doctest:
     <<: *common
@@ -62,6 +74,10 @@ jobs:
       - image: circleci/python:3.6
         environment:
           TOXENV: py36-integration-web3
+  py36-integration-metamask:
+    <<: *metamask
+    docker:
+      - image: circleci/python:3.6
   # python3.7
   py37-core:
     <<: *common
@@ -98,6 +114,7 @@ workflows:
       - py35-integration-web3
       - py36-core
       - py36-integration-web3
+      - py36-integration-metamask
       - py37-core
       - py37-integration-web3
       - pypy3-core
