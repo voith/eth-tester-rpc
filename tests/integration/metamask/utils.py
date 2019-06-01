@@ -17,6 +17,9 @@ from splinter.driver import (
     DriverAPI,
 )
 
+METAMASK_DOWNLOAD_URL = 'https://github.com/MetaMask/metamask-extension/' \
+                        'releases/download/v{version}/{extension_basename}.zip'
+
 
 def change_maifest_key(manifest_path, key):
     with open(manifest_path, "r") as fr:
@@ -27,7 +30,10 @@ def change_maifest_key(manifest_path, key):
 
 
 def download_metamask(version, extension_basename, extension_dir):
-    dl_url = f'https://github.com/MetaMask/metamask-extension/releases/download/v{version}/{extension_basename}.zip'
+    dl_url = METAMASK_DOWNLOAD_URL.format(
+        version=version,
+        extension_basename=extension_basename
+    )
     temporary_zipfile, _ = urllib.request.urlretrieve(dl_url)
     with zipfile.ZipFile(temporary_zipfile) as metamask_zip:
         metamask_zip.extractall(path=extension_dir)
@@ -66,7 +72,9 @@ class MetamaskExtension:
 
     @contextmanager
     def _switch_to_notification_window(self, *, wait_time=5):
-        current_window, metamask_window = self._get_current_and_notification_windows(wait_time=wait_time)
+        current_window, metamask_window = self._get_current_and_notification_windows(
+            wait_time=wait_time
+        )
         if current_window is not metamask_window:
             self._browser.switch_to.window(metamask_window.name)
 
@@ -135,7 +143,9 @@ class MetamaskExtension:
             "testrpc": "Test rpc",
         }
         if network not in network_map:
-            raise ValueError(f"invalid network: {network}. valid values: {', '.join(network_map.keys())}")
+            raise ValueError(
+                f"invalid network: {network}. valid values: {', '.join(network_map.keys())}"
+            )
         browser = self._browser
         with self._extension_page('home.html'):
             browser.find_by_css('.network-indicator').click()

@@ -17,7 +17,8 @@ from .utils import (
 DRIVER_NAME = 'chrome'
 METAMASK_VERSION = '6.5.3'
 MANIFEST_KEY = "metamaskmetamaskmetamaskmetamask"
-METAMASK_SEED_PHRASE = "around purse armed present black diamond dice abstract diary gold predict truth"
+METAMASK_SEED_PHRASE = "around purse armed present " \
+                       "black diamond dice abstract diary gold predict truth"
 METAMASK_ADDRESS = "0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b"
 
 
@@ -98,7 +99,10 @@ def init_metamask_account(rpc_client):
             "value": value,
         }],
     )
-    balance = rpc_client('eth_getBalance', params=['0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b', 'latest'])
+    balance = rpc_client(
+        'eth_getBalance',
+        params=['0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b', 'latest']
+    )
     assert balance == value
 
 
