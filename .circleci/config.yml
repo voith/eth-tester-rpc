@@ -35,7 +35,6 @@ metamask: &metamask
           sudo mv chromedriver /usr/bin
           sudo ln -s /usr/bin/google-chrome-stable /usr/bin/chrome
           chromedriver --version
-    <<: *common
 
 jobs:
   doctest:
@@ -77,8 +76,7 @@ jobs:
         environment:
           TOXENV: py36-integration-web3
   py36-integration-metamask:
-    <<:
-      *metamask
+    <<: [*metamask, *common]
     docker:
       - image: circleci/python:3.6
         environment:
