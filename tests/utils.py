@@ -79,3 +79,13 @@ def encode_fn_abi(abi, method_signature, arguments):
     return to_hex(
         function_sig + encode_abi(get_abi_input_types(fn_abi), arguments)
     )
+
+
+def close_http_socket(port):
+    s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+    s.settimeout(1)
+    try:
+        s.connect(('127.0.0.1', port))
+        s.close()
+    except (socket.timeout, ConnectionRefusedError):
+        pass
