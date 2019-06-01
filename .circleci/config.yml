@@ -24,6 +24,7 @@ common: &common
         key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
 
 metamask: &metamask
+  <<: *common
   steps:
     - run:
         name: install chrome driver
@@ -76,9 +77,8 @@ jobs:
         environment:
           TOXENV: py36-integration-web3
   py36-integration-metamask:
-    <<: |
+    <<:
       *metamask
-      *common
     docker:
       - image: circleci/python:3.6
         environment:
