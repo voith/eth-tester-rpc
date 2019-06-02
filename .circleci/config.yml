@@ -97,7 +97,7 @@ jobs:
         environment:
           TOXENV: py36-integration-web3
   py36-integration-metamask:
-    <<: [*metamask, *common]
+    <<: *metamask
     docker:
       - image: circleci/python:3.6-browsers
         environment:
