@@ -38,9 +38,6 @@ metamask: &metamask
           unzip chromedriver_linux64.zip
           chmod +x chromedriver
           sudo mv chromedriver /usr/bin
-          sudo apt-get install -y fonts-liberation libappindicator3-1 libasound2 libatk-bridge2.0-0 libatspi2.0-0 libgtk-3-0 libxtst6 lsb-release xdg-utils
-          wget https://dl.google.com/linux/direct/google-chrome-stable_current_amd64.deb
-          sudo dpkg -i google-chrome-stable_current_amd64.deb
           sudo ln -s /usr/bin/google-chrome-stable /usr/bin/chrome
           chromedriver --version
     - run:
@@ -99,7 +96,7 @@ jobs:
   py36-integration-metamask:
     <<: [*metamask, *common]
     docker:
-      - image: circleci/python:3.6
+      - image: circleci/python:3.6-browsers
         environment:
           TOXENV: py36-integration-metamask
   # python3.7
