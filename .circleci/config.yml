@@ -2,25 +2,6 @@ version: 2.0
 
 # heavily inspired by https://raw.githubusercontent.com/pinax/pinax-wiki/6bd2a99ab6f702e300d708532a6d1d9aa638b9f8/.circleci/config.yml
 
-common_steps: &common_steps
-  - checkout
-  - restore_cache:
-      keys:
-        - cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
-  - run:
-      name: install dependencies
-      command: pip install --user tox
-  - run:
-      name: run tox
-      command: ~/.local/bin/tox -r
-  - save_cache:
-      paths:
-        - .tox
-        - ~/.cache/pip
-        - ~/.local
-        - ./eggs
-      key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
-
 common: &common
   working_directory: ~/repo
   steps:
@@ -55,6 +36,23 @@ metamask: &metamask
           sudo mv chromedriver /usr/bin
           sudo ln -s /usr/bin/google-chrome-stable /usr/bin/chrome
           chromedriver --version
+    - checkout
+    - restore_cache:
+        keys:
+          - cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
+    - run:
+        name: install dependencies
+        command: pip install --user tox
+    - run:
+        name: run tox
+        command: ~/.local/bin/tox -r
+    - save_cache:
+        paths:
+          - .tox
+          - ~/.cache/pip
+          - ~/.local
+          - ./eggs
+        key: cache-{{ .Environment.CIRCLE_JOB }}-{{ checksum "setup.py" }}-{{ checksum "tox.ini" }}
 
 jobs:
   doctest:
