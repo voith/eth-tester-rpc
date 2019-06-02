@@ -36,3 +36,12 @@ def test_eth_TransactionCount(rpc_client, accounts):
         params=[accounts[2]],
     )
     assert account_2_txn_count == 0
+
+
+def test_eth_TransactionCount_with_block_number(rpc_client, accounts):
+    block_number = rpc_client('eth_blockNumber')
+    account_1_txn_count = rpc_client(
+        method="eth_getTransactionCount",
+        params=[accounts[1], hex(block_number)],
+    )
+    assert account_1_txn_count == 0
