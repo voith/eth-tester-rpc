@@ -72,5 +72,3 @@ workflows:
       - py36-integration-web3
       - py37-core
       - py37-integration-web3
-      - pypy3-core
-      - pypy3-integration-web3
