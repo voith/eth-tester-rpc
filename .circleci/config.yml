@@ -132,4 +132,14 @@ workflows:
   version: 2
   test:
     jobs:
+      - doctest
+      - lint
+      - py35-core
+      - py35-integration-web3
+      - py36-core
+      - py36-integration-web3
       - py36-integration-metamask
+      - py37-core
+      - py37-integration-web3
+      - pypy3-core
+      - pypy3-integration-web3
