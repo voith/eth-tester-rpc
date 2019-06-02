@@ -5,16 +5,29 @@ from wsgiref.simple_server import (
 from web3.providers import (
     HTTPProvider,
 )
-from web3.providers.eth_tester.middleware import (
-    ethereum_tester_fixture_middleware,
+from web3.middleware import (
+    construct_fixture_middleware,
 )
-from web3.utils.threads import (
+from .threads import (
     spawn,
 )
 
 from eth_tester_rpc.server import (
     get_application,
 )
+
+ethereum_tester_fixture_middleware = construct_fixture_middleware({
+    # Eth
+    'eth_protocolVersion': '63',
+    'eth_hashrate': 0,
+    'eth_gasPrice': 1,
+    'eth_syncing': False,
+    'eth_mining': False,
+    # Net
+    'net_version': '1',
+    'net_listening': False,
+    'net_peerCount': 0,
+})
 
 
 class EthTestRPCProvider(HTTPProvider):

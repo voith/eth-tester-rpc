@@ -53,6 +53,7 @@ def get_application():
         return dispatcher.add_method(rpc_fn_with_lock, *args, **kwargs)
 
     add_method_with_lock(rpc_methods.eth_coinbase, 'eth_coinbase')
+    add_method_with_lock(rpc_methods.eth_chainId, 'eth_chainId')
     add_method_with_lock(rpc_methods.eth_accounts, 'eth_accounts')
     add_method_with_lock(rpc_methods.eth_gasPrice, 'eth_gasPrice')
     add_method_with_lock(rpc_methods.eth_blockNumber, 'eth_blockNumber')
