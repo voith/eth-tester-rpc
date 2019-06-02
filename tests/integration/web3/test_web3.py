@@ -1,12 +1,11 @@
 import functools
-import pytest
 
 from eth_utils import (
     is_checksum_address,
     is_dict,
     is_hex,
 )
-
+import pytest
 from web3 import Web3
 from web3._utils.formatters import (
     hex_to_integer,

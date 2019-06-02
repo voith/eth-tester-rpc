@@ -2,18 +2,19 @@ from wsgiref.simple_server import (
     make_server,
 )
 
-from web3.providers import (
-    HTTPProvider,
-)
 from web3.middleware import (
     construct_fixture_middleware,
 )
-from .threads import (
-    spawn,
+from web3.providers import (
+    HTTPProvider,
 )
 
 from eth_tester_rpc.server import (
     get_application,
+)
+
+from .threads import (
+    spawn,
 )
 
 ethereum_tester_fixture_middleware = construct_fixture_middleware({
