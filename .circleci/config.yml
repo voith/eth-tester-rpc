@@ -63,7 +63,7 @@ jobs:
         environment:
           TOXENV: py37-integration-web3
 workflows:
-  version: 3
+  version: 2
   test:
     jobs:
       - doctest
