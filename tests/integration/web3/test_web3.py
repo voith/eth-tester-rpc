@@ -332,8 +332,13 @@ class TestEthereumTesterPersonalModule(GoEthereumPersonalModuleTest):
     )
 
     # Test overridden here since eth-tester returns False rather than None for failed unlock
-    def test_personal_unlockAccount_failure(self,
-                                            web3,
-                                            unlockable_account_dual_type):
-        result = web3.geth.personal.unlockAccount(unlockable_account_dual_type, 'bad-password')
+    def test_personal_unlockAccount_failure(
+        self,
+        web3,
+        unlockable_account_dual_type
+    ):
+        result = web3.geth.personal.unlockAccount(
+            unlockable_account_dual_type,
+            'bad-password'
+        )
         assert result is False
