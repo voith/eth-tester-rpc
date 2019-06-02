@@ -78,9 +78,10 @@ def splinter_kwargs(metamask_extension_path):
     """Webdriver kwargs."""
     options = Options()
     options.add_argument(f'--load-extension={metamask_extension_path}')
-    options.add_argument('--no-sandbox')
+    # options.add_argument('--no-sandbox')
     # options.add_argument('--headless')
-    options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument('--disable-dev-shm-usage')
+    # options.add_argument('--remote-debugging-port=5552')
     return dict(options=options)
 
 
