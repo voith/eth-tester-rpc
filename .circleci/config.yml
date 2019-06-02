@@ -44,8 +44,11 @@ metamask: &metamask
         name: install dependencies
         command: pip install --user tox
     - run:
-        name: run tox
-        command: ~/.local/bin/tox -r
+        name: run tests
+        command: |
+          tox -e py36-integration-metamask --notest
+          source ~/repo/.tox/py36-integration-metamask/bin/activate
+          pytest tests/integration/metamask/
     - save_cache:
         paths:
           - .tox
