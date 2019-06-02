@@ -46,8 +46,8 @@ metamask: &metamask
     - run:
         name: run tests
         command: |
-          ~/.local/bin/tox -e $TOXENV --notest
-          source ~/repo/.tox/$TOXENV/bin/activate
+          ~/.local/bin/tox -e py36-integration-metamask --notest
+          source ~/repo/.tox/py36-integration-metamask/bin/activate
           pytest tests/integration/metamask/
     - save_cache:
         paths:
