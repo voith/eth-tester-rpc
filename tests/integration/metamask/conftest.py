@@ -79,6 +79,8 @@ def splinter_kwargs(metamask_extension_path):
     options = Options()
     options.add_argument(f'--load-extension={metamask_extension_path}')
     options.add_argument('--no-sandbox')
+    options.add_argument('--headless')
+    options.add_argument('--disable-dev-shm-usage')
     return dict(options=options)
 
 
