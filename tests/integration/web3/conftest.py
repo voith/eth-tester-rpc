@@ -1,17 +1,17 @@
 from eth_utils import (
     to_bytes,
 )
+from eth_utils.toolz import (
+    identity,
+)
 import pytest
-from web3.utils.module_testing.emitter_contract import (
+from web3._utils.module_testing.emitter_contract import (
     EMITTER_ABI,
     EMITTER_BYTECODE,
 )
-from web3.utils.module_testing.math_contract import (
+from web3._utils.module_testing.math_contract import (
     MATH_ABI,
     MATH_BYTECODE,
-)
-from web3.utils.toolz import (
-    identity,
 )
 
 
