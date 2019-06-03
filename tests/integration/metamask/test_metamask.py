@@ -1,3 +1,3 @@
 
-def test_metamask(metamask):
+def test_metamask(metamask, browser):
     pass

@@ -123,7 +123,7 @@ def get_application():
 
     @Request.application
     def application(request):
-        print(request.url, request.data)
+        print(request.url, request.data, end='')
         response = JSONRPCResponseManager.handle(
             request.data,
             dispatcher,
@@ -133,6 +133,7 @@ def get_application():
             headers=RESPONSE_HEADERS,
             mimetype='application/json',
         )
+        print(force_obj_to_text(response.data, True))
         return response
 
     application.rpc_methods = rpc_methods

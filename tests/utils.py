@@ -89,3 +89,7 @@ def close_http_socket(port):
         s.close()
     except (socket.timeout, ConnectionRefusedError):
         pass
+
+
+def hex_to_int(val):
+    return int(val, 16)
