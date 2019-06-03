@@ -1,5 +1,7 @@
 import pytest
 
+from tests.utils import hex_to_int
+
 
 def test_personal_sendTransaction(accounts, rpc_client, password_account, account_password):
     initial_balance = rpc_client('eth_getBalance', [accounts[1]])
@@ -22,4 +24,4 @@ def test_personal_sendTransaction(accounts, rpc_client, password_account, accoun
     }, account_password])
     after_balance = rpc_client('eth_getBalance', [accounts[1]])
 
-    assert after_balance - initial_balance == 1234
+    assert hex_to_int(after_balance) - hex_to_int(initial_balance) == 1234

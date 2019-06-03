@@ -12,6 +12,7 @@ import pytest
 
 from tests.utils import (
     encode_fn_abi,
+    hex_to_int,
 )
 
 request_counter = itertools.count()
@@ -298,5 +299,7 @@ def password_account(
         'value': initial_balance,
     }])
 
-    assert rpc_client('eth_getBalance', [address]) == initial_balance
+    assert hex_to_int(
+        rpc_client('eth_getBalance', [address])
+    ) == initial_balance
     return address
