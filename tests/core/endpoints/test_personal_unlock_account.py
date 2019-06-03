@@ -1,5 +1,9 @@
 import pytest
 
+from tests.utils import (
+    hex_to_int,
+)
+
 
 def test_personal_unlockAccount(accounts, rpc_client, password_account, account_password):
     initial_balance = rpc_client('eth_getBalance', [accounts[1]])
@@ -34,4 +38,4 @@ def test_personal_unlockAccount(accounts, rpc_client, password_account, account_
     }])
     after_balance = rpc_client('eth_getBalance', [accounts[1]])
 
-    assert after_balance - initial_balance == 1234
+    assert hex_to_int(after_balance) - hex_to_int(initial_balance) == 1234

@@ -22,7 +22,7 @@ def test_eth_getBlock_full_tx(rpc_client, accounts):
     block_number = rpc_client('eth_blockNumber')
     block = rpc_client(
         'eth_getBlockByNumber',
-        params=[hex(block_number), True]
+        params=[block_number, True]
     )
     assert len(block['transactions']) == 1
     assert 'gasPrice' in block['transactions'][0]
