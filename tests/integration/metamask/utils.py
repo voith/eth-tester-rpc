@@ -162,14 +162,35 @@ class MetamaskExtension:
 
             sleep(1)
 
+    def visit_home(self):
+        self._browser.visit(self._get_page_url('home.html'))
+
     def get_balance(self):
-        with self._extension_page('home.html'):
-            element = self._browser.find_by_css(".transaction-view-balance__primary-balance").first
-            balance_title = element['title']
-            balance_str, _, token_symbol = balance_title.partition(' ')
-            assert token_symbol == 'ETH'
-            return Decimal(balance_str)
+        self.visit_home()
+        element = self._browser.find_by_css('.token-amount').first
+        balance_title = element['title']
+        balance_str, _, token_symbol = balance_title.partition(' ')
+        assert token_symbol == 'ETH'
+        return Decimal(balance_str)
 
     def confirm_notification(self):
         with self._switch_to_notification_window():
             self._browser.find_by_css(".button.btn-primary").click()
+
+    def deposit_amount(self, address, amount):
+        self.visit_home()
+        self._browser.find_by_xpath(
+            '//button[contains(text(), "Send")]'
+        ).click()
+        self._browser.find_by_xpath(
+            '//input[@placeholder="Recipient Address"]'
+        ).fill(address)
+        self._browser.find_by_xpath(
+            '//input[@type="number"]'
+        ).fill(str(amount))
+        self._browser.find_by_xpath(
+            '//button[contains(text(), "Next")]'
+        ).click()
+        self._browser.find_by_xpath(
+            '//button[contains(text(), "Confirm")]'
+        ).click()

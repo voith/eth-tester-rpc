@@ -26,22 +26,22 @@ METAMASK_SEED_PHRASE = "around purse armed present " \
 METAMASK_ADDRESS = "0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b"
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def metamask_version():
     return METAMASK_VERSION
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def manifest_key():
     return MANIFEST_KEY
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def extension_basename(metamask_version):
     return f'metamask-chrome-{metamask_version}'
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def extension_dir(extension_basename):
     var_dir = os.path.abspath(
         os.path.join(
@@ -53,12 +53,12 @@ def extension_dir(extension_basename):
     return os.path.join(var_dir, extension_basename)
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def manifest_path(extension_dir):
     return os.path.join(extension_dir, 'manifest.json')
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def metamask_extension_path(
         metamask_version,
         extension_basename,
@@ -77,7 +77,7 @@ def metamask_extension_path(
     return extension_dir
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def splinter_kwargs(metamask_extension_path):
     """Webdriver kwargs."""
     options = Options()
@@ -85,31 +85,36 @@ def splinter_kwargs(metamask_extension_path):
     return dict(options=options)
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def browser(splinter_kwargs):
     return Browser(DRIVER_NAME, **splinter_kwargs)
 
 
-@pytest.fixture()
-def init_metamask_account(rpc_client):
+@pytest.fixture(scope='session')
+def initial_metamask_balance():
+    return 10 ** 18 - 10 ** 17
+
+
+@pytest.fixture(scope='session')
+def init_metamask_account(rpc_client, initial_metamask_balance):
     from_account = rpc_client('eth_accounts')[0]
-    value = 10 ** 18 - 10 ** 17
+
     rpc_client(
         method="eth_sendTransaction",
         params=[{
             "from": from_account,
             "to": METAMASK_ADDRESS,
-            "value": value,
+            "value": initial_metamask_balance,
         }],
     )
     balance = rpc_client(
         'eth_getBalance',
         params=['0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b', 'latest']
     )
-    assert hex_to_int(balance) == value
+    assert hex_to_int(balance) == initial_metamask_balance
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def metamask(browser, open_port, init_metamask_account):
     _metamask = MetamaskExtension(
         browser,

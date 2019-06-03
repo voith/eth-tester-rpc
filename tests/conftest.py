@@ -24,12 +24,12 @@ from tests.utils import (
 request_counter = itertools.count()
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def open_port():
     return get_open_port()
 
 
-@pytest.yield_fixture()
+@pytest.yield_fixture(scope='session')
 def rpc_server(open_port):
     from eth_tester_rpc.server import get_application
 
@@ -53,7 +53,7 @@ def rpc_server(open_port):
     thread.join()
 
 
-@pytest.fixture()
+@pytest.fixture(scope='session')
 def rpc_client(rpc_server):
     try:
         host, port = rpc_server.address
