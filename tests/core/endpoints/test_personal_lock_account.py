@@ -1,7 +1,8 @@
 import pytest
 
-
-from tests.utils import hex_to_int
+from tests.utils import (
+    hex_to_int,
+)
 
 
 def test_personal_lockAccount(accounts, rpc_client, password_account, account_password):

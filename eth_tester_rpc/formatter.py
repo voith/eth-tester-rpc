@@ -236,6 +236,7 @@ default_request_formatters = {
 default_result_formatters = {
     'eth_getBalance': integer_to_hex,
     'eth_blockNumber': integer_to_hex,
+    'eth_getTransactionCount': integer_to_hex,
     'eth_getBlockByHash': apply_formatter_if(
         is_dict,
         block_key_remapper,

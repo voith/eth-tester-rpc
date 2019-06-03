@@ -1,3 +1,8 @@
+from tests.utils import (
+    hex_to_int,
+)
+
+
 def test_eth_TransactionCount(rpc_client, accounts):
     for _ in range(3):
         rpc_client(
@@ -23,19 +28,19 @@ def test_eth_TransactionCount(rpc_client, accounts):
         method="eth_getTransactionCount",
         params=[accounts[0]],
     )
-    assert account_0_txn_count == 3
+    assert hex_to_int(account_0_txn_count) == 3
 
     account_1_txn_count = rpc_client(
         method="eth_getTransactionCount",
         params=[accounts[1]],
     )
-    assert account_1_txn_count == 5
+    assert hex_to_int(account_1_txn_count) == 5
 
     account_2_txn_count = rpc_client(
         method="eth_getTransactionCount",
         params=[accounts[2]],
     )
-    assert account_2_txn_count == 0
+    assert hex_to_int(account_2_txn_count) == 0
 
 
 def test_eth_TransactionCount_with_block_number(rpc_client, accounts):
@@ -44,4 +49,4 @@ def test_eth_TransactionCount_with_block_number(rpc_client, accounts):
         method="eth_getTransactionCount",
         params=[accounts[1], block_number],
     )
-    assert account_1_txn_count == 0
+    assert hex_to_int(account_1_txn_count) == 0
