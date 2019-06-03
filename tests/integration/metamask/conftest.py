@@ -26,22 +26,22 @@ METAMASK_SEED_PHRASE = "around purse armed present " \
 METAMASK_ADDRESS = "0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b"
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def metamask_version():
     return METAMASK_VERSION
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def manifest_key():
     return MANIFEST_KEY
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def extension_basename(metamask_version):
     return f'metamask-chrome-{metamask_version}'
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def extension_dir(extension_basename):
     var_dir = os.path.abspath(
         os.path.join(
@@ -53,12 +53,12 @@ def extension_dir(extension_basename):
     return os.path.join(var_dir, extension_basename)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def manifest_path(extension_dir):
     return os.path.join(extension_dir, 'manifest.json')
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def metamask_extension_path(
         metamask_version,
         extension_basename,
@@ -77,7 +77,7 @@ def metamask_extension_path(
     return extension_dir
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def splinter_kwargs(metamask_extension_path):
     """Webdriver kwargs."""
     options = Options()
@@ -85,17 +85,17 @@ def splinter_kwargs(metamask_extension_path):
     return dict(options=options)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def browser(splinter_kwargs):
     return Browser(DRIVER_NAME, **splinter_kwargs)
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def initial_metamask_balance():
     return 10 ** 18 - 10 ** 17
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def init_metamask_account(rpc_client, initial_metamask_balance):
     from_account = rpc_client('eth_accounts')[0]
 
@@ -114,7 +114,7 @@ def init_metamask_account(rpc_client, initial_metamask_balance):
     assert hex_to_int(balance) == initial_metamask_balance
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture()
 def metamask(browser, open_port, init_metamask_account):
     _metamask = MetamaskExtension(
         browser,
