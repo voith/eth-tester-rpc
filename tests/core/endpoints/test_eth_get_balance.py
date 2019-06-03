@@ -2,7 +2,10 @@ from eth_tester.constants import (
     UINT256_MAX,
     UINT256_MIN,
 )
-from tests.utils import hex_to_int
+
+from tests.utils import (
+    hex_to_int,
+)
 
 
 def test_eth_getBalance(rpc_client):

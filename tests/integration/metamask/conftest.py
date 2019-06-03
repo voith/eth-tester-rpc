@@ -8,6 +8,10 @@ from splinter import (
     Browser,
 )
 
+from tests.utils import (
+    hex_to_int,
+)
+
 from .utils import (
     MetamaskExtension,
     change_maifest_key,
@@ -106,7 +110,7 @@ def init_metamask_account(rpc_client):
         'eth_getBalance',
         params=['0x6Ef7E2dBc9b41C5081c8990c0327DcB8528bA05b', 'latest']
     )
-    assert balance == value
+    assert hex_to_int(balance) == value
 
 
 @pytest.fixture()
