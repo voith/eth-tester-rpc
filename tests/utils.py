@@ -1,9 +1,13 @@
 from eth_abi import (
     encode_abi,
 )
+from eth_keys.datatypes import (
+    Signature,
+)
 from eth_utils import (
     encode_hex,
     keccak,
+    to_bytes,
     to_hex,
 )
 
@@ -11,6 +15,9 @@ from eth_tester_rpc.utils.compat_threading import (  # noqa: E402
     Timeout,
     sleep,
     socket,
+)
+from eth_tester_rpc.utils.solidity import (
+    solidityKeccak,
 )
 
 
@@ -93,3 +100,14 @@ def close_http_socket(port):
 
 def hex_to_int(val):
     return int(val, 16)
+
+
+def ecrecover(signature, message):
+    message_hash = to_bytes(hexstr=message)
+    message_hash = solidityKeccak(
+            ['string', 'bytes32'],
+            ['\x19Ethereum Signed Message:\n32', message_hash]
+    )
+    _signature = Signature(to_bytes(hexstr=signature))
+    public_key = _signature.recover_public_key_from_msg_hash(message_hash)
+    return public_key.to_checksum_address()

@@ -10,11 +10,14 @@ from eth_utils import (
     to_dict,
     to_list,
 )
-
-from .toolz import (
+from eth_utils.toolz import (
     compose,
     curry,
     dissoc,
+)
+
+from .decorators import (
+    reject_recursive_repeats,
 )
 
 
@@ -136,3 +139,15 @@ def remove_key_if(key, remove_if, input_dict):
         return dissoc(input_dict, key)
     else:
         return input_dict
+
+
+@reject_recursive_repeats
+def recursive_map(func, data):
+    """
+    Apply func to data, and any collection items inside data (using map_collection).
+    Define func so that it only applies to the type of value that you want it to apply to.
+    """
+    def recurse(item):
+        return recursive_map(func, item)
+    items_mapped = map_collection(recurse, data)
+    return func(items_mapped)
