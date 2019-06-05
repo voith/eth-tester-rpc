@@ -2,9 +2,6 @@ import operator
 import random
 import sys
 
-from eth_tester import (
-    EthereumTester,
-)
 from eth_tester.exceptions import (
     BlockNotFound,
     FilterNotFound,
@@ -23,6 +20,9 @@ from .formatter import (
     default_value_formatter,
     request_formatter,
     result_formatter,
+)
+from .tester import (
+    EthereumTester,
 )
 from .utils.formatters import (
     apply_formatter_if,
@@ -211,7 +211,7 @@ API_ENDPOINTS = {
             call_eth_tester('get_block_by_number'),
         )),
         'getCode': call_eth_tester('get_code'),
-        'sign': not_implemented,
+        'sign': call_eth_tester('sign_message'),
         'sendTransaction': call_eth_tester('send_transaction'),
         'sendRawTransaction': call_eth_tester('send_raw_transaction'),
         'call': call_eth_tester('call'),  # TODO: untested
@@ -375,7 +375,7 @@ class RPCMethods:
 
     def __init__(self, eth_tester=None, api_endpoints=None):
         if eth_tester is None:
-            from eth_tester.backends.pyevm.main import PyEVMBackend
+            from .pyevm_backend import PyEVMBackend
             self.client = EthereumTester(backend=PyEVMBackend())
         else:
             self.client = eth_tester
