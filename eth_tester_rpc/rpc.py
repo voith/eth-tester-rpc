@@ -167,7 +167,7 @@ API_ENDPOINTS = {
         ),
     },
     'net': {
-        'version': lambda *args: 99,
+        'version': static_return('99'),
         'peerCount': not_implemented,
         'listening': not_implemented,
     },
