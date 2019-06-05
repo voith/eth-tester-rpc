@@ -1,4 +1,6 @@
-from eth_account import Account
+from eth_account import (
+    Account,
+)
 
 from tests.utils import (
     ecrecover,
