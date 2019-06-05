@@ -105,8 +105,8 @@ def hex_to_int(val):
 def ecrecover(signature, message):
     message_hash = to_bytes(hexstr=message)
     message_hash = solidityKeccak(
-            ['string', 'bytes32'],
-            ['\x19Ethereum Signed Message:\n32', message_hash]
+        ['string', 'bytes32'],
+        ['\x19Ethereum Signed Message:\n32', message_hash]
     )
     _signature = Signature(to_bytes(hexstr=signature))
     public_key = _signature.recover_public_key_from_msg_hash(message_hash)

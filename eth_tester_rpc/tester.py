@@ -1,8 +1,8 @@
-from eth_utils import (
-    is_hex,
-)
 from eth_tester import (
     EthereumTester as _EthereumTester,
+)
+from eth_utils import (
+    is_hex,
 )
 
 from .utils.validation import (

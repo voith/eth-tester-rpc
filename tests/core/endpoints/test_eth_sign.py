@@ -1,4 +1,6 @@
-from tests.utils import ecrecover
+from tests.utils import (
+    ecrecover,
+)
 
 
 def test_eth_sign(rpc_client):
