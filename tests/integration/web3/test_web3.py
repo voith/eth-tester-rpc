@@ -3,13 +3,15 @@ import functools
 from eth_utils import (
     is_checksum_address,
     is_dict,
-    is_hex,
+)
+from hexbytes import (
+    HexBytes,
 )
 import pytest
-from web3 import Web3
-from web3._utils.formatters import (
-    hex_to_integer,
+from requests.exceptions import (
+    HTTPError,
 )
+from web3 import Web3
 from web3._utils.module_testing import (
     EthModuleTest,
     GoEthereumPersonalModuleTest,
@@ -97,16 +99,30 @@ def emitter_contract_deploy_txn_hash(web3, emitter_contract_factory):
 
 @pytest.fixture(scope="module")
 def emitter_contract(web3, emitter_contract_factory, emitter_contract_deploy_txn_hash):
-    deploy_receipt = web3.eth.waitForTransactionReceipt(emitter_contract_deploy_txn_hash)
-    assert is_dict(deploy_receipt)
-    contract_address = deploy_receipt['contractAddress']
-    assert is_checksum_address(contract_address)
-    return emitter_contract_factory(contract_address)
+    return make_contract_with_factory(
+        web3,
+        emitter_contract_factory,
+        emitter_contract_deploy_txn_hash
+    )
 
 
 @pytest.fixture(scope="module")
 def emitter_contract_address(emitter_contract, address_conversion_func):
     return address_conversion_func(emitter_contract.address)
+
+
+@pytest.fixture(scope="module")
+def revert_contract(web3, revert_contract_factory, emitter_contract_deploy_txn_hash):
+    deploy_txn = revert_contract_factory.constructor().transact({'from': web3.eth.coinbase})
+    return make_contract_with_factory(web3, revert_contract_factory, deploy_txn)
+
+
+def make_contract_with_factory(web3, contract_factory, contract_deploy_txn):
+    deploy_receipt = web3.eth.waitForTransactionReceipt(contract_deploy_txn)
+    assert is_dict(deploy_receipt)
+    contract_address = deploy_receipt['contractAddress']
+    assert is_checksum_address(contract_address)
+    return contract_factory(contract_address)
 
 
 @pytest.fixture(scope="module")
@@ -117,7 +133,7 @@ def empty_block(web3):
     return block
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def block_with_txn(web3):
     txn_hash = web3.eth.sendTransaction({
         'from': web3.eth.coinbase,
@@ -236,6 +252,20 @@ class TestEthereumTesterEthModule(EthModuleTest):
     test_eth_signTransaction = not_implemented(EthModuleTest.test_eth_signTransaction, ValueError)
     test_eth_submitHashrate = not_implemented(EthModuleTest.test_eth_submitHashrate, ValueError)
     test_eth_submitWork = not_implemented(EthModuleTest.test_eth_submitWork, ValueError)
+    test_eth_signTransaction_ens_names = not_implemented(
+        EthModuleTest.test_eth_signTransaction_ens_names,
+        ValueError
+    )
+
+    # The server does not revert with a message, instead it throws an HTTPError
+    test_eth_call_revert_with_msg = not_implemented(
+        EthModuleTest.test_eth_call_revert_with_msg,
+        HTTPError
+    )
+    test_eth_estimateGas_revert_with_msg = not_implemented(
+        EthModuleTest.test_eth_estimateGas_revert_with_msg,
+        HTTPError
+    )
 
     @disable_auto_mine
     def test_eth_getTransactionReceipt_unmined(self, eth_tester, web3, unlocked_account):
@@ -300,6 +330,10 @@ class TestEthereumTesterEthModule(EthModuleTest):
         pytest.xfail('json-rpc method is not implemented on eth-tester')
         super().test_eth_getStorageAt(web3, emitter_contract_address)
 
+    def test_eth_getStorageAt_ens_name(self, web3, emitter_contract_address) -> None:
+        pytest.xfail('json-rpc method is not implemented on eth-tester')
+        super().test_eth_getStorageAt_ens_name(web3, emitter_contract_address)
+
     def test_eth_estimateGas_with_block(self,
                                         web3,
                                         unlocked_account_dual_type):
@@ -309,9 +343,18 @@ class TestEthereumTesterEthModule(EthModuleTest):
         )
 
     def test_eth_chainId(self, web3):
-        chain_id = web3.eth.chainId
-        assert is_hex(chain_id)
-        assert hex_to_integer(chain_id) is 61
+        assert web3.eth.chainId is 61
+
+    # Test overridden here since eth-tester does not return `from` and `to` in transaction receipt
+    def test_eth_getTransactionReceipt_mined(
+        self, web3: "Web3", block_with_txn, mined_txn_hash
+    ) -> None:
+        receipt = web3.eth.getTransactionReceipt(mined_txn_hash)
+        assert is_dict(receipt)
+        assert receipt['blockNumber'] == block_with_txn['number']
+        assert receipt['blockHash'] == block_with_txn['hash']
+        assert receipt['transactionIndex'] == 0
+        assert receipt['transactionHash'] == HexBytes(mined_txn_hash)
 
 
 class TestEthereumTesterVersionModule(VersionModuleTest):
@@ -328,14 +371,35 @@ class TestEthereumTesterPersonalModule(GoEthereumPersonalModuleTest):
         GoEthereumPersonalModuleTest.test_personal_sign_and_ecrecover,
         ValueError,
     )
+    test_personal_sign_and_ecrecover_deprecated = not_implemented(
+        GoEthereumPersonalModuleTest.test_personal_sign_and_ecrecover_deprecated,
+        ValueError,
+    )
+    test_personal_list_wallets = not_implemented(
+        GoEthereumPersonalModuleTest.test_personal_list_wallets,
+        ValueError
+    )
 
     # Test overridden here since eth-tester returns False rather than None for failed unlock
-    def test_personal_unlockAccount_failure(
+    def test_personal_unlockAccount_failure_deprecated(
         self,
         web3,
         unlockable_account_dual_type
     ):
-        result = web3.geth.personal.unlockAccount(
+        with pytest.warns(DeprecationWarning):
+            result = web3.geth.personal.unlockAccount(
+                unlockable_account_dual_type,
+                'bad-password'
+            )
+            assert result is False
+
+    # Test overridden here since eth-tester returns False rather than None for failed unlock
+    def test_personal_unlock_account_failure(
+        self,
+        web3,
+        unlockable_account_dual_type
+    ):
+        result = web3.geth.personal.unlock_account(
             unlockable_account_dual_type,
             'bad-password'
         )
