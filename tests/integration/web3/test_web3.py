@@ -133,7 +133,7 @@ def empty_block(web3):
     return block
 
 
-@pytest.fixture(scope="module")
+@pytest.fixture(scope="module", autouse=True)
 def block_with_txn(web3):
     txn_hash = web3.eth.sendTransaction({
         'from': web3.eth.coinbase,
